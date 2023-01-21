@@ -35,16 +35,16 @@ class Market:
         self._sell(amount, local_currency_price)
 
     def _buy(self, amount, price):
-        raise NotImplementedError("%s.sell(self, amount, price)" % self.name)
+        raise NotImplementedError(f"{self.name}.sell(self, amount, price)")
 
     def _sell(self, amount, price):
-        raise NotImplementedError("%s.sell(self, amount, price)" % self.name)
+        raise NotImplementedError(f"{self.name}.sell(self, amount, price)")
 
     def deposit(self):
-        raise NotImplementedError("%s.sell(self, amount, price)" % self.name)
+        raise NotImplementedError(f"{self.name}.sell(self, amount, price)")
 
     def withdraw(self, amount, address):
-        raise NotImplementedError("%s.sell(self, amount, price)" % self.name)
+        raise NotImplementedError(f"{self.name}.sell(self, amount, price)")
 
     def get_info(self):
-        raise NotImplementedError("%s.sell(self, amount, price)" % self.name)
+        raise NotImplementedError(f"{self.name}.sell(self, amount, price)")

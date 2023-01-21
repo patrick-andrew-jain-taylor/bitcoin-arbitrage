@@ -20,16 +20,14 @@ class BitfinexUSD(Market):
         try:
             depth = json.loads(jsonstr)
         except Exception:
-            logging.error("%s - Can't parse json: %s" % (self.name, jsonstr))
+            logging.error(f"{self.name} - Can't parse json: {jsonstr}")
         self.depth = self.format_depth(depth)
 
     def sort_and_format(self, l, reverse=False):
         l.sort(key=lambda x: float(x["price"]), reverse=reverse)
-        r = []
-        for i in l:
-            r.append({'price': float(i['price']),
-                      'amount': float(i['amount'])})
-        return r
+        return [
+            {'price': float(i['price']), 'amount': float(i['amount'])} for i in l
+        ]
 
     def format_depth(self, depth):
         bids = self.sort_and_format(depth['bids'], True)

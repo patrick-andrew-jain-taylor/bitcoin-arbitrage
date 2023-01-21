@@ -10,7 +10,7 @@ import json
 class MockMarket(object):
     def __init__(self, name, fee=0, usd_balance=500., btc_balance=15., persistent=True):
         self.name = name
-        self.filename = "traderbot-sim-" + name + ".json"
+        self.filename = f"traderbot-sim-{name}.json"
         self.usd_balance = usd_balance
         self.btc_balance = btc_balance
         self.fee = fee

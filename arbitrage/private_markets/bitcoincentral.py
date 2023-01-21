@@ -22,11 +22,6 @@ class PrivateBitcoinCentral(Market):
     def __init__(self):
         # FIXME: update this file when bitcoin central re-opens
         raise Exception("BitcoinCentral is closed")
-        super().__init__()
-        self.username = config.bitcoincentral_username
-        self.password = config.bitcoincentral_password
-        self.currency = "EUR"
-        self.get_info()
 
     def _create_nonce(self):
         return int(time.time() * 1000000)
@@ -47,10 +42,10 @@ class PrivateBitcoinCentral(Market):
                 url, json.dumps(params), headers=headers)
         else:
             req = urllib.request.Request(url, headers=headers)
-        userpass = '%s:%s' % (self.username, self.password)
+        userpass = f'{self.username}:{self.password}'
         base64string = base64.b64encode(bytes(
             userpass, 'utf-8')).decode('ascii')
-        req.add_header("Authorization", "Basic %s" % base64string)
+        req.add_header("Authorization", f"Basic {base64string}")
         response = urllib.request.urlopen(req)
         code = response.getcode()
         if code == 200:
@@ -64,8 +59,7 @@ class PrivateBitcoinCentral(Market):
         params = {"amount": amount, "currency": self.currency, "type": ttype}
         if price:
             params["price"] = price
-        response = self._send_request(self.trade_url, params)
-        return response
+        return self._send_request(self.trade_url, params)
 
     def buy(self, amount, price=None):
         response = self.trade(amount, "buy", price)
@@ -76,15 +70,13 @@ class PrivateBitcoinCentral(Market):
 
     def withdraw(self, amount, address):
         params = {"amount": amount, "address": address}
-        response = self._send_request(self.trade_url, params)
-        return response
+        return self._send_request(self.trade_url, params)
 
     def deposit(self):
         return config.bitcoincentral_address
 
     def get_info(self):
-        response = self._send_request(self.balance_url)
-        if response:
+        if response := self._send_request(self.balance_url):
             self.btc_balance = response["BTC"]
             self.eur_balance = response["EUR"]
             self.usd_balance = self.fc.convert(self.eur_balance, "EUR", "USD")

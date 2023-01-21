@@ -40,8 +40,7 @@ class FiatConverter:
         url = self.rate_exchange_url_yahoo % (code_from, code_to)
         res = urllib.request.urlopen(url)
         data = res.read().decode('utf8').split(",")[1]
-        rate = float(data) * (1.0 - self.bank_fee)
-        return rate
+        return float(data) * (1.0 - self.bank_fee)
 
     def update_currency_pair(self, code_to):
         if code_to == "USD":
