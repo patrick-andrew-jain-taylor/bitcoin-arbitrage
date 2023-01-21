@@ -23,7 +23,7 @@ class Market(object):
             self.ask_update_depth()
         timediff = time.time() - self.depth_updated
         if timediff > config.market_expiration_time:
-            logging.warn('Market: %s order book is expired' % self.name)
+            logging.warn(f'Market: {self.name} order book is expired')
             self.depth = {'asks': [{'price': 0, 'amount': 0}], 'bids': [
                 {'price': 0, 'amount': 0}]}
         return self.depth
@@ -41,19 +41,19 @@ class Market(object):
             self.convert_to_usd()
             self.depth_updated = time.time()
         except (urllib.error.HTTPError, urllib.error.URLError) as e:
-            logging.error("HTTPError, can't update market: %s" % self.name)
+            logging.error(f"HTTPError, can't update market: {self.name}")
             log_exception(logging.DEBUG)
         except Exception as e:
-            logging.error("Can't update market: %s - %s" % (self.name, str(e)))
+            logging.error(f"Can't update market: {self.name} - {str(e)}")
             log_exception(logging.DEBUG)
 
     def get_ticker(self):
         depth = self.get_depth()
-        res = {'ask': 0, 'bid': 0}
-        if len(depth['asks']) > 0 and len(depth["bids"]) > 0:
-            res = {'ask': depth['asks'][0],
-                   'bid': depth['bids'][0]}
-        return res
+        return (
+            {'ask': depth['asks'][0], 'bid': depth['bids'][0]}
+            if len(depth['asks']) > 0 and len(depth["bids"]) > 0
+            else {'ask': 0, 'bid': 0}
+        )
 
     ## Abstract methods
     def update_depth(self):

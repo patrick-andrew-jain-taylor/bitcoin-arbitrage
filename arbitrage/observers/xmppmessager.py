@@ -21,8 +21,7 @@ class MyXMPPClient(ClientXMPP):
         self.get_roster()
 
     def msend_message(self, message):
-        logging.debug('Sending XMPP message: "%s" to %s' % (message,
-                                                            config.xmpp_to))
+        logging.debug(f'Sending XMPP message: "{message}" to {config.xmpp_to}')
         self.send_message(mto=config.xmpp_to, mbody=message, mtype='chat')
 
     def message(self, msg):

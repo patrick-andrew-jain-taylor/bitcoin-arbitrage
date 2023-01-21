@@ -45,12 +45,10 @@ class SpecializedTraderBot(Observer):
     def opportunity(self, profit, volume, buyprice, kask, sellprice, kbid, perc,
                     weighted_buyprice, weighted_sellprice):
         if kask not in self.clients:
-            logging.warn(
-                "Can't automate this trade, client not available: %s" % (kask))
+            logging.warn(f"Can't automate this trade, client not available: {kask}")
             return
         if kbid not in self.clients:
-            logging.warn(
-                "Can't automate this trade, client not available: %s" % (kbid))
+            logging.warn(f"Can't automate this trade, client not available: {kbid}")
             return
         if perc < self.profit_percentage_thresholds[kask][kbid]:
             logging.warn("Can't automate this trade, profit=%f is lower than defined threshold %f"
@@ -76,8 +74,9 @@ class SpecializedTraderBot(Observer):
 
         current_time = time.time()
         if current_time - self.last_trade < self.trade_wait:
-            logging.warn("Can't automate this trade, last trade occured %s seconds ago"
-                         % (current_time - self.last_trade))
+            logging.warn(
+                f"Can't automate this trade, last trade occured {current_time - self.last_trade} seconds ago"
+            )
             return
 
         self.potential_trades.append([profit, volume, kask, kbid, weighted_buyprice,

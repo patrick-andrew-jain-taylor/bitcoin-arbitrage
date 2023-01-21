@@ -22,9 +22,7 @@ class BitstampUSD(Market):
         self.depth = self.format_depth(depth)
 
     def sort_and_format(self, l, reverse):
-        r = []
-        for i in l:
-            r.append({'price': float(i[0]), 'amount': float(i[1])})
+        r = [{'price': float(i[0]), 'amount': float(i[1])} for i in l]
         r.sort(key=lambda x: float(x['price']), reverse=reverse)
         return r
 
